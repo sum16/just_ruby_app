@@ -1,0 +1,72 @@
+<% require 'rubygems' %>
+<% require 'dbi' %>
+
+<% dbh = DBI.connect( 'DBI:SQLite3:sample.db' ) %>
+
+<% rows = dbh.select_all("select * from books #{where_date};") %>
+
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>蔵書管理</title>
+</head>
+<body>
+
+<h1>蔵書管理</h1>
+    
+
+<hr>
+
+<% unless rows.size > 0 %>
+<%#検索結果がないとき %>
+<h2>検索結果がありません</h2>
+<p>検索条件を見直してから実行してください</p>
+<a href="list.erb">蔵書データの表示</a>
+<a href="index.html">メニュー画面へ戻る</a>
+
+<% else %>
+<%#検索結果があった時%>
+<h2>検索結果の表示</h2>
+<p>検索結果</p>
+<a href="list.erb">蔵書データの表示</a>
+<a href="index.html">メニュー画面へ戻る</a>
+<% end %>
+
+
+
+<form method="post" action="list">
+    <table>
+    <tr>
+        <th>削除</th>
+        <th>修正</th>
+            <% ['id', 'title', 'author', 'page', 'publish_date'].each do |name| %>
+        <th><%= name %></th>
+            <% end %>
+    </tr>
+
+    <% dbh.select_all( "select * from books #{where_date};") do |row| %>
+    <tr>
+        <% ['id', 'title', 'author', 'page', 'publish_date'].each do |name| %>
+            <% if name == 'id' %>
+            <td><input type="radio" name="oparation" value=<%= "#{row[name]}.delete"%>></td>
+            <td><input type="radio" name="oparation" value=<%= "#{row[name]}.edit"%>></td>
+            <% end %>
+            <td><%= row[name].to_s %></td>
+        <% end %>
+    </tr>
+    <% end %>
+    </table>
+
+
+    <input type="submit" value="選択した処理を実行">
+
+    <hr>
+</form>
+
+
+</body>
+</html>
+
+<% dbh.disconnect %>

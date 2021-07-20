@@ -1,0 +1,29 @@
+body {
+ background-color: #fff8dc;
+}
+
+h1, h2, h3 {
+    border-width: 0 0 0 8px;
+    border-style: solid;
+    padding-left: 0.3rem;
+    padding-right: 0.5rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+}
+
+table {
+    border-width: 1px, 2px, 2px, 1px;
+    border-style: solid;
+    background-color: gray;
+    padding: 0;
+    border-color: gray;
+}
+
+th, td {
+    border-width: 1px, 0px, 0px, 1px;
+    border-style: solid;
+    padding: 4px;
+    background-color: #ffffef;
+}

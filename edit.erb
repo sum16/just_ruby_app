@@ -1,0 +1,47 @@
+<% require 'rubygems' %>
+<% require 'dbi' %>
+
+<% dbh = DBI.connect( 'DBI:SQLite3:sample.db' ) %>
+
+<% sth = dbh.execute("select * from books where id = '#{target_id}'") %>
+
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>蔵書管理</title>
+</head>
+<body>
+
+<h1>蔵書管理</h1>
+<h2>蔵書データの修正</h2>  
+<p>このデータを修正します</p>
+<a href="list.erb">蔵書データの表示</a>
+<a href="index.html">メニュー画面へ戻る</a>
+
+<hr>
+
+
+<form method="post" action="edit">
+<input type="hidden" name="id" value="<%= target_id %>">
+    <table>
+    <% sth.each do |row| %>
+      <th>削除</th>
+      <th>修正データ</th>
+      <% ['id', 'title', 'author', 'page', 'publish_date'].each do |name| %>
+      <tr>  
+        <td><%= name %></td>
+        <td><input name="<%= name %>" value="<%= row[name] %>" size=""></td>
+      </tr>
+      <% end %>
+      <% end %>
+    </table>
+    <input type="submit" value="修正する">
+</form>
+<hr>
+
+
+</body>
+</html>
+
