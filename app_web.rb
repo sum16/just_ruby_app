@@ -98,7 +98,7 @@ server.mount_proc("/search") do |req, res|
         where_date = "where "+ a.join('or')
     end
 
-      #処理の結果を表示する
+      #処理の結果を表示
       template = ERB.new( File.read('search_results.erb') )
       res.body << template.result( binding )
 end
