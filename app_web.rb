@@ -72,7 +72,7 @@ server.mount_proc("/entry") do |req, res|
     dbh = DBI.connect( 'DBI:SQLite3:sample.db')
 
         #テーブルへデータを追加する
-        dbh.do("insert into books values('#{req.query['id']}', '#{req.query['title']}', '#{req.query['author']}', '#{req.query['page']}', '#{req.query['publish_date']}');")
+        dbh.do("insert into books values('#{req.query['id']}', '#{req.query['title'].force_encoding("utf-8")}', '#{req.query['author'].force_encoding("utf-8")}', '#{req.query['page']}', '#{req.query['publish_date']}');")
 
         #データベースとの接続を終了
         dbh.disconnect
@@ -109,14 +109,31 @@ end
 server.mount_proc("/edit") do |req, res|
     p req.query
 
+    #binding.pry
+
     dbh = DBI.connect( 'DBI:SQLite3:sample.db')
-    dbh.do("update books set id = '#{req.query['id']}', title='#{req.query['title']}', author='#{req.query['author']}', page= '#{req.query['page']}', publish_date='#{req.query['publish_date']}' where id = '#{req.query['id']}';" )
+    dbh.do("update books set id = '#{req.query['id']}', title='#{req.query['title'].force_encoding("utf-8")}', author='#{req.query['author'].force_encoding("utf-8")}', page= '#{req.query['page']}', publish_date='#{req.query['publish_date']}' where id = '#{req.query['id']}';" )
 
     dbh.disconnect
 
     template = ERB.new( File.read('edited.erb') )
     res.body << template.result( binding )
 end
+
+#削除の処理
+server.mount_proc("/delete") do |req, res|
+    p req.query
+
+
+    dbh = DBI.connect( 'DBI:SQLite3:sample.db')
+    dbh.do("delete from books where id = '#{req.query['id'].force_encoding("utf-8")}';")
+
+    dbh.disconnect
+
+    template = ERB.new( File.read('deleted.erb') )
+    res.body << template.result( binding )
+end
+
 
 #Ctrl-cの割り込みがあった場合にサーバーを停止する処理
 trap(:INT) do
@@ -129,9 +146,6 @@ server.start
 
 
 
-----------------
-edited.erbの作成からスタート
----------------
 
 #一時寄せ
 

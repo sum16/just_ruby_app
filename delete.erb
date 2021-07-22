@@ -5,7 +5,8 @@
 
 <% dbh = DBI.connect( 'DBI:SQLite3:sample.db' ) %>
 
-<% sth = dbh.execute("select * from books where id = '#{target_id}'") %>
+<% row = dbh.select_one("select * from books where id = '#{target_id}'") %>
+
 
 
 <html lang="ja">
@@ -17,29 +18,26 @@
 <body>
 
 <h1>蔵書管理</h1>
-<h2>蔵書データの修正</h2>  
-<p>このデータを修正します</p>
+<h2>蔵書データの削除</h2>  
+<p>このデータを削除します</p>
 <a href="list.erb">蔵書データの表示</a>
 <a href="index.html">メニュー画面へ戻る</a>
 
 <hr>
 
-
-<form method="post" action="edit">
+<form method="post" action="delete">
 <input type="hidden" name="id" value="<%= target_id %>">
     <table>
-    <% sth.each do |row| %>
-      <th>削除</th>
-      <th>修正データ</th>
-      <% ['id', 'title', 'author', 'page', 'publish_date'].each do |name| %>
+      <th>項目名</th>
+      <th>削除データ</th>
+      <% row.each_with_name do |val, name| %>
       <tr>  
-        <td><%= name %></td>
-        <td><input name="<%= name %>" value="<%= row[name] %>" size=""></td>
+        <td><%= name %></td><td><%= val.to_s %></td>
+        <input type="hidden" name="<%= name %>" value= "<%= val.to_s %>">
       </tr>
       <% end %>
-      <% end %>
     </table>
-    <input type="submit" value="修正する">
+    <input type="submit" value="削除する">
 </form>
 <hr>
 

@@ -1,0 +1,36 @@
+<%# -*- coding: utf-8 -*- %>
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>蔵書管理</title>
+</head>
+<body>
+
+<h1>蔵書管理</h1>
+<h2>蔵書データの修正</h2>
+<p>蔵書データを下記の通りに修正しました</p>
+<a href="list.erb">蔵書データの表示</a>
+<a href="index.html">メニュー画面へ戻る</a>
+
+<hr>
+
+<table>
+    <th>項目名</th>
+    <th>修正後のデータ</th>
+
+    <% ['id', 'title', 'author', 'page', 'pubish_date'].each do |name|%>
+
+    <tr>
+        <td><%= name %></td>
+        <td><%= req.query[name] %></td>
+    </tr>
+    <% end %>
+
+    <hr>
+</table>
+
+
+</body>
+</html>

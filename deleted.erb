@@ -1,0 +1,35 @@
+<%# -*- coding: utf-8 -*- %>
+
+<html lang="ja">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>蔵書管理</title>
+  </head>
+  <body>
+
+    <h1>蔵書管理</h1>
+    <h2>蔵書データの削除</h2>  
+    <p>下記の蔵書データを削除しました</p>
+    <a href="list.erb">蔵書データの表示</a>
+    <a href="index.html">メニュー画面へ戻る</a>
+
+    <hr>
+
+      <table>
+        <th>項目名</th>
+        <th>削除データ</th>
+        <% ['id', 'title', 'author', 'page', 'publish_date'].each do |name| %>
+        <tr>  
+          <td><%= name %></td>
+          <td><%= req.query[name] %></td>
+        </tr>
+        <% end %>
+      </table>
+      <input type="submit" value="削除する">
+
+  <hr>
+
+  </body>
+</html>
+
